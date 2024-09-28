@@ -1,4 +1,6 @@
 // Firebase Configuration
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import {getFirestore} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js"
 const firebaseConfig = {
     apiKey: "AIzaSyDINh2pIV631a--AtygTDkmqeEi5PAnsVg",
     authDomain: "hackfusion-c831d.firebaseapp.com",
@@ -10,7 +12,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const firebase = initializeApp(firebaseConfig);
 
 // Initialize Firestore
-const db = firebase.firestore();
+const db = getFirestore(firebase);
+

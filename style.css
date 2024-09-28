@@ -89,8 +89,35 @@ button:hover {
     font-size: 24px;
     color: #f8f8f2;
 }
-
+.exam-header>button{
+    width: 50%;
+    color: white;
+    font-weight: 500;
+}
+.check{
+    display: none;
+    width: 50px;
+    height: 50px;
+    animation: spin .5s ease-in forwards ;
+    transition: all ease-in;
+}
+@keyframes spin {
+    to{
+        transform: rotate(360deg);
+    }
+}
 .logo {
     height: 100px;
     width: auto;
+}
+.code-area{
+    display: none;
+}
+
+.thank-you{
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
 }

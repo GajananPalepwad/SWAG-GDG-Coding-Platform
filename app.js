@@ -1,4 +1,21 @@
 // Helper function to get the language mode
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import {getFirestore, addDoc, collection,} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js"
+const firebaseConfig = {
+    apiKey: "AIzaSyDINh2pIV631a--AtygTDkmqeEi5PAnsVg",
+    authDomain: "hackfusion-c831d.firebaseapp.com",
+    databaseURL: "https://hackfusion-c831d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "hackfusion-c831d",
+    storageBucket: "hackfusion-c831d.appspot.com",
+    messagingSenderId: "131044666281",
+    appId: "1:131044666281:web:da10868a523bb5cd1d72b8"
+};
+
+// Initialize Firebase
+const firebase = initializeApp(firebaseConfig);
+
+// Initialize Firestore
+const db = getFirestore(firebase);
 function getMode(language) {
     switch (language) {
         case 'python': return 'python';
@@ -57,35 +74,36 @@ const editor4 = CodeMirror.fromTextArea(document.getElementById('editor4'), {
 loadFromLocalStorage(editor4, 'code4');
 
 // Save the content to localStorage when the editor content changes
-editor1.on('change', function() {
+editor1.on('change', function () {
     saveToLocalStorage(editor1, 'code1');
 });
-editor2.on('change', function() {
+editor2.on('change', function () {
     saveToLocalStorage(editor2, 'code2');
 });
-editor3.on('change', function() {
+editor3.on('change', function () {
     saveToLocalStorage(editor3, 'code3');
 });
-editor4.on('change', function() {
+editor4.on('change', function () {
     saveToLocalStorage(editor4, 'code4');
 });
 
 // Update editor mode when language selection changes
-document.getElementById('language1').addEventListener('change', function() {
+document.getElementById('language1').addEventListener('change', function () {
     editor1.setOption('mode', getMode(this.value));
 });
-document.getElementById('language2').addEventListener('change', function() {
+document.getElementById('language2').addEventListener('change', function () {
     editor2.setOption('mode', getMode(this.value));
 });
-document.getElementById('language3').addEventListener('change', function() {
+document.getElementById('language3').addEventListener('change', function () {
     editor3.setOption('mode', getMode(this.value));
 });
-document.getElementById('language4').addEventListener('change', function() {
+document.getElementById('language4').addEventListener('change', function () {
     editor4.setOption('mode', getMode(this.value));
 });
 
 // Handle form submission
-document.getElementById('submitBtn').addEventListener('click', function() {
+document.getElementById('submitBtn').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the page from refreshing
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const mobile = document.getElementById('mobile').value;
@@ -95,7 +113,7 @@ document.getElementById('submitBtn').addEventListener('click', function() {
     const code4 = editor4.getValue();
 
     // Save data to Firebase Firestore
-    db.collection("submissions").add({
+    addDoc(collection(db, "submissions"),{
         name: name,
         email: email,
         mobile: mobile,
@@ -103,29 +121,32 @@ document.getElementById('submitBtn').addEventListener('click', function() {
         code2: code2,
         code3: code3,
         code4: code4,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        timestamp:new Date()
     })
-    .then(function() {
-        alert("Submission successful!");
-        // Clear localStorage after successful submission
-        localStorage.removeItem('code1');
-        localStorage.removeItem('code2');
-        localStorage.removeItem('code3');
-        localStorage.removeItem('code4');
-        editor1.setValue('');
-        editor2.setValue('');
-        editor3.setValue('');
-        editor4.setValue('');
-    })
-    .catch(function(error) {
-        console.error("Error submitting data: ", error);
-    });
+        .then(function () {
+            console.log("submission successfull");
+            // Clear localStorage after successful submission
+            localStorage.removeItem('code1');
+            localStorage.removeItem('code2');
+            localStorage.removeItem('code3');
+            localStorage.removeItem('code4');
+            editor1.setValue('');
+            editor2.setValue('');
+            editor3.setValue('');
+            editor4.setValue('');
+        })
+        .catch(function (error) {
+            console.error("Error submitting data: ", error);
+        });
+    exitFullscreen();
+    document.querySelector(".thank-you").style.display = "flex";
+    document.querySelector(".container").style.display = "none";
 });
 
 // Timer and exam start time functionality
 
 // Set the specific exam start time
-const examStartTime = new Date('2024-09-24T15:15:00');
+const examStartTime = new Date('2024-09-29T14:30:00');
 
 function startExam() {
     const currentTime = new Date();
@@ -151,48 +172,55 @@ function startExam() {
 }
 
 // Function to request full-screen mode
-function requestFullscreen() {
-    const elem = document.documentElement;
+// Function to request full-screen mode
+function goFullscreen() {
+    const elem = document.body; // or document.body for simplicity
+
     if (elem.requestFullscreen) {
-        elem.requestFullscreen();
+        elem.requestFullscreen().then(() => {
+            console.log("Entered fullscreen mode.");
+            return true;
+        }).catch(err => {
+            console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+        });
     } else if (elem.mozRequestFullScreen) { // Firefox
         elem.mozRequestFullScreen();
+        return true;
     } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
         elem.webkitRequestFullscreen();
+        return true;
     } else if (elem.msRequestFullscreen) { // IE/Edge
         elem.msRequestFullscreen();
+        return true;
     }
 }
 
 // Function to exit full-screen mode
 function exitFullscreen() {
     if (document.exitFullscreen) {
-        document.exitFullscreen();
+        document.exitFullscreen().then(() => {
+            console.log("Exited fullscreen mode.");
+        }).catch(err => {
+            console.error(`Error exiting fullscreen: ${err.message}`);
+        });
     } else if (document.mozCancelFullScreen) { // Firefox
         document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+    } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
         document.webkitExitFullscreen();
     } else if (document.msExitFullscreen) { // IE/Edge
         document.msExitFullscreen();
     }
 }
 
+
 // Function to check full-screen status
 function isFullscreen() {
     return (
-        document.fullscreenElement ||
-        document.webkitFullscreenElement ||
-        document.mozFullScreenElement ||
-        document.msFullscreenElement
+        document.fullscreenElement ||   // Standard
+        document.webkitFullscreenElement || // Chrome, Safari, Opera
+        document.mozFullScreenElement ||   // Firefox
+        document.msFullscreenElement       // IE/Edge
     ) !== null;
-}
-
-// Function to handle full-screen change
-function handleFullscreenChange() {
-    if (!isFullscreen()) {
-        alert("Please return to full-screen mode to continue the exam.");
-        requestFullscreen();
-    }
 }
 
 // Function to start the countdown timer
@@ -236,7 +264,7 @@ function autoSubmit() {
     const code4 = editor4.getValue();
 
     // Auto-submit the data to Firebase Firestore
-    db.collection("submissions").add({
+    addDoc(collection(db, "submissions"),{
         name: name,
         email: email,
         mobile: mobile,
@@ -244,29 +272,72 @@ function autoSubmit() {
         code2: code2,
         code3: code3,
         code4: code4,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        timestamp: new Date()
     })
-    .then(function() {
-        alert("Submission successful!");
-        localStorage.removeItem('code1');
-        localStorage.removeItem('code2');
-        localStorage.removeItem('code3');
-        localStorage.removeItem('code4');
-        editor1.setValue('');
-        editor2.setValue('');
-        editor3.setValue('');
-        editor4.setValue('');
-    })
-    .catch(function(error) {
-        console.error("Error submitting data: ", error);
-    });
+        .then(function () {
+            console.log("submission successfull");
+            localStorage.removeItem('code1');
+            localStorage.removeItem('code2');
+            localStorage.removeItem('code3');
+            localStorage.removeItem('code4');
+            editor1.setValue('');
+            editor2.setValue('');
+            editor3.setValue('');
+            editor4.setValue('');
+        })
+        .catch(function (error) {
+            console.error("Error submitting data: ", error);
+        });
+    exitFullscreen();
+    document.querySelector(".thank-you").style.display = "flex";
+    document.querySelector(".container").style.display = "none";
 }
 
-// Add event listeners for full-screen changes
-document.addEventListener('fullscreenchange', handleFullscreenChange);
-document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+document.getElementById('cnf-btn').addEventListener("click", Confirm);
 
-// Trigger exam start
-startExam();
+function Confirm() {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const mobile = document.getElementById('mobile').value;
+
+    if (name === "" || email === "" || mobile === "") {
+        alert("Please Fill out details!\nIncorrect details are subject to your negligence, We'll not be responsible for your disqualification! ");
+    
+   
+
+    } else {
+        document.getElementById('cnf-btn').innerHTML = "Loading..";
+        setTimeout(() => {
+            document.getElementById('cnf-btn').style.display = "none";
+            document.querySelector('.check').style.display = "block";
+        }, 1000);
+
+        // Trigger full-screen mode
+        goFullscreen();
+        document.body.style.overflow = "auto";
+        document.querySelector('.code-area').style.display = "block";
+    }
+}
+document.body.onload = ()=>{
+    Notification.requestPermission().then(permissioon => {
+        if (permissioon === "granted") {
+            console.log("Granted")
+        }
+        else{
+            document.body.innerHTML = "Allow Notifications to start";
+        }
+    }).catch(err=>{
+        console.log(err);
+    })
+}
+document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState === "hidden"){
+        const notify = new Notification ("Tab Changed",{
+            body:"Test submitted!",
+            // tag:"Warning"
+        })
+        if(document.querySelector(".thank-you").style.display !== "flex"){
+            autoSubmit();
+        }
+    }
+})

@@ -1,46 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simple Coding Platform</title>
-    <link rel="stylesheet" href="style.css" />
-    <!-- CodeMirror Styles (Dark Theme) -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css"
-    />
-  </head>
-  <body>
-    <!-- Header with logos -->
-    <div class="exam-header">
-      <img src="public/gdg.png" alt="Logo 1" class="logo" />
-      <h1>Coding Exam 2024</h1>
-      <img src="public/swag.png" alt="Logo 2" class="logo" />
-    </div>
 
-    <div class="container">
-      <h2>Submit Your Code</h2>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Coding Platform</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- CodeMirror Styles (Dark Theme) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css" />
+</head>
 
-      <form id="submissionForm">
-        <div class="exam-header">
-          <label for="name">Name:</label>
-          <input type="text" id="name" required /><br /><br />
+<body>
+  <!-- Header with logos -->
+  <div class="exam-header">
+    <img src="public/gdg.png" alt="Logo 1" class="logo" />
+    <h1>Coding Exam 2024</h1>
+    <img src="public/swag.png" alt="Logo 2" class="logo" />
+  </div>
 
-          <label for="email">Email:</label>
-          <input type="email" id="email" required /><br /><br />
+  <div class="container">
+    <h2>Submit Your Code</h2>
 
-          <label for="mobile">Mobile:</label>
-          <input type="text" id="mobile" required /><br /><br />
-        </div>
+    <form id="submissionForm">
+      <div class="exam-header">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required /><br /><br />
 
+        <label for="email">Email:</label>
+        <input type="email" id="email" required /><br /><br />
+
+        <label for="mobile">Mobile:</label>
+        <input type="text" id="mobile" required /><br /><br />
+        <button type="button" id="cnf-btn">Confirm</button>
+        <img class="check" src="./public/checked.png" />
+      </div>
+
+      <div class="code-area">
         <h3>Time Remaining: <span id="timer">60:00</span></h3>
-
-
         <!-- Language Selector -->
         <label for="language1">Select Language (Question 1):</label>
         <select id="language1">
@@ -55,7 +52,7 @@
           <option value="sql">SQL</option>
         </select>
         <textarea id="editor1"></textarea><br /><br />
-
+  
         <label for="language2">Select Language (Question 2):</label>
         <select id="language2">
           <option value="javascript">JavaScript</option>
@@ -69,7 +66,7 @@
           <option value="sql">SQL</option>
         </select>
         <textarea id="editor2"></textarea><br /><br />
-
+  
         <label for="language3">Select Language (Question 3):</label>
         <select id="language3">
           <option value="javascript">JavaScript</option>
@@ -83,7 +80,7 @@
           <option value="sql">SQL</option>
         </select>
         <textarea id="editor3"></textarea><br /><br />
-
+  
         <label for="language4">Select Language (Question 4):</label>
         <select id="language4">
           <option value="javascript">JavaScript</option>
@@ -97,31 +94,40 @@
           <option value="sql">SQL</option>
         </select>
         <textarea id="editor4"></textarea><br /><br />
+  
+        <button type="submit" id="submitBtn">Submit</button>
+      </div>
+    </form>
+  </div>
 
-        <button type="button" id="submitBtn">Submit</button>
-      </form>
-    </div>
+  <div class="thank-you">
+    <h2>Test Submitted</h2>
+    <br/>
+    <br/>
+    <h3>Thank You!</h3>
+  </div>
 
-    <!-- CodeMirror Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/php/php.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/ruby/ruby.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/htmlmixed/htmlmixed.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/sql/sql.min.js"></script>
-    <!-- Firebase App (the core Firebase SDK) -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+  <!-- CodeMirror Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/php/php.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/ruby/ruby.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/sql/sql.min.js"></script>
+  <!-- Firebase App (the core Firebase SDK) -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script> -->
 
-    <!-- Firebase Firestore -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+  <!-- Firebase Firestore -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script> -->
 
-    <!-- Optionally: Add Firebase Authentication and other Firebase services -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+  <!-- Optionally: Add Firebase Authentication and other Firebase services -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script> -->
+<script type="text/javascript" src="https://unpkg.com/default-passive-events"></script>
+  <!-- <script type="module" src="firebase.js"></script> -->
+  <script type="module" src="app.js"></script>
+</body>
 
-    <script src="firebase.js"></script>
-    <script src="app.js"></script>
-  </body>
 </html>
