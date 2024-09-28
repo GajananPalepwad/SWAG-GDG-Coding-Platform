@@ -314,6 +314,7 @@ function Confirm() {
 
         // Trigger full-screen mode
         goFullscreen();
+        startTimer();
         document.body.style.overflow = "auto";
         document.querySelector('.code-area').style.display = "block";
     }
