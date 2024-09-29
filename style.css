@@ -73,6 +73,15 @@ button:hover {
     border-radius: 8px;
 }
 
+.CodeMirror-gutter {
+     /* Optional: border for clarity */
+}
+
+.CodeMirror-lines {
+    padding-left: -50px; /* Space between line numbers and text */
+}
+
+
 /* Header Styling */
 .exam-header {
     display: flex;
