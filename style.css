@@ -121,3 +121,9 @@ button:hover {
     align-items: center;
 
 }
+#submitBtn{
+    display: none;
+}
+.CodeMirror-line{
+    text-indent: 3%;
+} 

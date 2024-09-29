@@ -1,6 +1,6 @@
 // Helper function to get the language mode
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-import {getFirestore, addDoc, collection,} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js"
+import { getFirestore, addDoc, collection, } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js"
 const firebaseConfig = {
     apiKey: "AIzaSyDINh2pIV631a--AtygTDkmqeEi5PAnsVg",
     authDomain: "hackfusion-c831d.firebaseapp.com",
@@ -102,7 +102,7 @@ document.getElementById('language4').addEventListener('change', function () {
 });
 
 // Handle form submission
-document.getElementById('submitBtn').addEventListener('submit', function (event) {
+document.getElementById('submitBtn').addEventListener('click', function (event) {
     event.preventDefault(); // Prevent the page from refreshing
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
@@ -113,7 +113,7 @@ document.getElementById('submitBtn').addEventListener('submit', function (event)
     const code4 = editor4.getValue();
 
     // Save data to Firebase Firestore
-    addDoc(collection(db, "submissions"),{
+    addDoc(collection(db, "submissions"), {
         name: name,
         email: email,
         mobile: mobile,
@@ -121,7 +121,7 @@ document.getElementById('submitBtn').addEventListener('submit', function (event)
         code2: code2,
         code3: code3,
         code4: code4,
-        timestamp:new Date()
+        timestamp: new Date()
     })
         .then(function () {
             console.log("submission successfull");
@@ -141,35 +141,36 @@ document.getElementById('submitBtn').addEventListener('submit', function (event)
     exitFullscreen();
     document.querySelector(".thank-you").style.display = "flex";
     document.querySelector(".container").style.display = "none";
+    localStorage.setItem("sts", "submitted");
 });
 
 // Timer and exam start time functionality
 
 // Set the specific exam start time
-const examStartTime = new Date('2024-09-29T14:30:00');
+// const examStartTime = new Date('2024-09-29T14:30:00');
 
-function startExam() {
-    const currentTime = new Date();
-    if (currentTime >= examStartTime) {
-        // Start the exam immediately
-        requestFullscreen();
-        const elapsedTime = Math.floor((currentTime - examStartTime) / 1000);
-        const remainingTime = Math.max(3600 - elapsedTime, 0); // 3600 seconds = 1 hour
-        startTimer(remainingTime);
-    } else {
-        // Set a timeout to start the exam at the correct time
-        const timeUntilStart = examStartTime - currentTime;
-        setTimeout(() => {
-            alert('The exam is starting now. Please enter full-screen mode.');
-            requestFullscreen();
-            startTimer(3600); // Start with full 1 hour when exam begins
-        }, timeUntilStart);
+// function startExam() {
+//     const currentTime = new Date();
+//     if (currentTime >= examStartTime) {
+//         // Start the exam immediately
+//         requestFullscreen();
+//         const elapsedTime = Math.floor((currentTime - examStartTime) / 1000);
+//         const remainingTime = Math.max(3600 - elapsedTime, 0); // 3600 seconds = 1 hour
+//         startTimer(remainingTime);
+//     } else {
+//         // Set a timeout to start the exam at the correct time
+//         const timeUntilStart = examStartTime - currentTime;
+//         setTimeout(() => {
+//             alert('The exam is starting now. Please enter full-screen mode.');
+//             requestFullscreen();
+//             startTimer(3600); // Start with full 1 hour when exam begins
+//         }, timeUntilStart);
 
-        // Display a message about when the exam will start
-        const minutesUntilStart = Math.ceil(timeUntilStart / 60000);
-        alert(`The exam will start in approximately ${minutesUntilStart} minutes. You will need to enter full-screen mode when it begins.`);
-    }
-}
+//         // Display a message about when the exam will start
+//         const minutesUntilStart = Math.ceil(timeUntilStart / 60000);
+//         alert(`The exam will start in approximately ${minutesUntilStart} minutes. You will need to enter full-screen mode when it begins.`);
+//     }
+// }
 
 // Function to request full-screen mode
 // Function to request full-screen mode
@@ -238,7 +239,7 @@ function startTimer(duration) {
         seconds = timer % 60;
 
         // Display the timer
-        timerElement.textContent =
+        timerElement.innerHTML =
             (minutes < 10 ? "0" : "") + minutes + ":" +
             (seconds < 10 ? "0" : "") + seconds;
 
@@ -264,7 +265,7 @@ function autoSubmit() {
     const code4 = editor4.getValue();
 
     // Auto-submit the data to Firebase Firestore
-    addDoc(collection(db, "submissions"),{
+    addDoc(collection(db, "submissions"), {
         name: name,
         email: email,
         mobile: mobile,
@@ -291,6 +292,7 @@ function autoSubmit() {
     exitFullscreen();
     document.querySelector(".thank-you").style.display = "flex";
     document.querySelector(".container").style.display = "none";
+    localStorage.setItem("sts", "submitted");
 }
 
 document.getElementById('cnf-btn').addEventListener("click", Confirm);
@@ -302,8 +304,8 @@ function Confirm() {
 
     if (name === "" || email === "" || mobile === "") {
         alert("Please Fill out details!\nIncorrect details are subject to your negligence, We'll not be responsible for your disqualification! ");
-    
-   
+
+
 
     } else {
         document.getElementById('cnf-btn').innerHTML = "Loading..";
@@ -314,30 +316,37 @@ function Confirm() {
 
         // Trigger full-screen mode
         goFullscreen();
-        startTimer();
+        startTimer(3600);
         document.body.style.overflow = "auto";
         document.querySelector('.code-area').style.display = "block";
+        document.getElementById("submitBtn").style.display = "block";
     }
 }
-document.body.onload = ()=>{
+document.body.onload = () => {
     Notification.requestPermission().then(permissioon => {
         if (permissioon === "granted") {
             console.log("Granted")
         }
-        else{
+        else {
             document.body.innerHTML = "Allow Notifications to start";
         }
-    }).catch(err=>{
+    }).catch(err => {
         console.log(err);
     })
+    if (localStorage.getItem('sts') === "submitted") {
+        document.querySelector(".thank-you").style.display = "flex";
+        document.querySelector(".container").style.display = "none";
+    }
 }
-document.addEventListener('visibilitychange',()=>{
-    if(document.visibilityState === "hidden"){
-        const notify = new Notification ("Tab Changed",{
-            body:"Test submitted!",
-            // tag:"Warning"
-        })
-        if(document.querySelector(".thank-you").style.display !== "flex"){
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === "hidden") {
+        if (document.querySelector(".thank-you").style.display !== "flex") {
+            const notify = new Notification("Tab Changed", {
+                body: "Test submitted!",
+                // tag:"Warning"
+            })
+        }
+        if (document.querySelector(".thank-you").style.display !== "flex") {
             autoSubmit();
         }
     }
