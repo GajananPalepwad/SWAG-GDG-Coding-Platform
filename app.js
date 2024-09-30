@@ -134,14 +134,15 @@ document.getElementById('submitBtn').addEventListener('click', function (event) 
             editor2.setValue('');
             editor3.setValue('');
             editor4.setValue('');
+            exitFullscreen();
+            document.querySelector(".thank-you").style.display = "flex";
+            document.querySelector(".container").style.display = "none";
+            localStorage.setItem("sts", "submitted");
         })
         .catch(function (error) {
             console.error("Error submitting data: ", error);
+            alert("Test not submitted!")
         });
-    exitFullscreen();
-    document.querySelector(".thank-you").style.display = "flex";
-    document.querySelector(".container").style.display = "none";
-    localStorage.setItem("sts", "submitted");
 });
 
 // Timer and exam start time functionality
@@ -285,14 +286,16 @@ function autoSubmit() {
             editor2.setValue('');
             editor3.setValue('');
             editor4.setValue('');
+            exitFullscreen();
+            document.querySelector(".thank-you").style.display = "flex";
+            document.querySelector(".container").style.display = "none";
+            localStorage.setItem("sts", "submitted");
         })
         .catch(function (error) {
             console.error("Error submitting data: ", error);
+            alert("Test not submitted!")
         });
-    exitFullscreen();
-    document.querySelector(".thank-you").style.display = "flex";
-    document.querySelector(".container").style.display = "none";
-    localStorage.setItem("sts", "submitted");
+
 }
 
 document.getElementById('cnf-btn').addEventListener("click", Confirm);
